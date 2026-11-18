@@ -6,15 +6,21 @@
 /*   By: tmaissne <tmaissne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/18 14:42:49 by tmaissne          #+#    #+#             */
-/*   Updated: 2026/11/18 19:34:34 by tmaissne         ###   ########.fr       */
+/*   Updated: 2026/11/18 19:44:22 by tmaissne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
+static char *ft_strini(char *str)
+{
+	str = malloc(sizeof(char) * 1);
+	str[0] = '\0';
+	return(str);
+}
 
-char	*fillfirstlign(int fd, char *stach)
+static char	*fill_lines(int fd, char *stach)
 {
 	char	*str;
 	char	*tmp;
@@ -22,8 +28,8 @@ char	*fillfirstlign(int fd, char *stach)
 
 	size = 0;
 	if (!stach)
-		stach = calloc(sizeof(char), BUFFER_SIZE);
-	str = malloc(sizeof(char) * BUFFER_SIZE + 1);
+		stach = ft_strini(stach);
+	str = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	while (ft_strchr(stach, '\n') == 0)
 	{
 		size = read(fd, str, BUFFER_SIZE);
@@ -54,7 +60,7 @@ char *get_next_line(int fd)
 	j = 0;
 	lign = NULL;
 	temp = NULL;
-	stach = fillfirstlign(fd, stach);
+	stach = fill_lines(fd, stach);
 	if (!stach)
 		return (NULL);
 	while(stach[i] && stach[i] != '\n')
@@ -70,9 +76,6 @@ char *get_next_line(int fd)
 	stach = temp;
 	return(lign);
 }
-
-#include "get_next_line.h"
-#include <stdio.h>
 
 int    main(void)
 {
