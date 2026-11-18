@@ -6,7 +6,7 @@
 /*   By: tmaissne <tmaissne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 15:48:11 by tmaissne          #+#    #+#             */
-/*   Updated: 2026/11/16 19:09:34 by tmaissne         ###   ########.fr       */
+/*   Updated: 2026/11/18 17:23:09 by tmaissne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	ft_strlen(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while(str[i])
 		i++;
 	return (i);
@@ -61,8 +63,6 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
 	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
 		return (NULL);
@@ -83,7 +83,6 @@ char	*ft_strjoin(char *s1, char *s2)
 int	ft_strchr(char *s, int c)
 {
 	int		i;
-	char	*str;
 	int		j;
 
 	i = 0;
@@ -92,7 +91,6 @@ int	ft_strchr(char *s, int c)
 	{
 		if (s[i] == (char)c)
 		{
-			str = s;
 			return (i);
 		}
 		i++;
