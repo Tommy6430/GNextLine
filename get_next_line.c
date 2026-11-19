@@ -6,40 +6,29 @@
 /*   By: tmaissne <tmaissne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/18 14:42:49 by tmaissne          #+#    #+#             */
-/*   Updated: 2026/11/18 19:44:22 by tmaissne         ###   ########.fr       */
+/*   Updated: 2026/11/19 15:23:02 by tmaissne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-static char *ft_strini(char *str)
+static char *ft_read(int fd, char *stach, ssize_t size)
 {
-	str = malloc(sizeof(char) * 1);
-	str[0] = '\0';
-	return(str);
-}
-
-static char	*fill_lines(int fd, char *stach)
-{
-	char	*str;
 	char	*tmp;
-	ssize_t	size;
+	char	*str;
 
-	size = 0;
-	if (!stach)
-		stach = ft_strini(stach);
 	str = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	while (ft_strchr(stach, '\n') == 0)
+	while (ft_strchr(stach, '\n') == 0 && size != 0)
 	{
 		size = read(fd, str, BUFFER_SIZE);
-		str[size] = '\0';
-		if (size == 0 && stach[0] == '\0')
+		if (size == -1)
 		{
 			free(stach);
 			free(str);
 			return (NULL);
 		}
+		str[size] = '\0';
 		tmp = ft_strjoin(stach, str);
 		free (stach);
 		stach = tmp;
@@ -47,47 +36,53 @@ static char	*fill_lines(int fd, char *stach)
 	free(str);
 	return(stach);
 }
-
-char *get_next_line(int fd)
+static char	*fill_lines(int fd, char *stach)
 {
-	char		*lign;
-	char		*temp;
-	static char *stach;
-	int			i;
-	int			j;
+	ssize_t	size;
+
+	size = 1;
+	if (!stach)
+	{
+		stach = malloc(sizeof(char) * 1);
+		stach[0] = '\0';
+	}
+	stach = ft_read(fd, stach, size);
+	return(stach);
+}
+
+void	ft_separate_lines(char *stach, char **line, char **temp)
+{
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
-	lign = NULL;
-	temp = NULL;
-	stach = fill_lines(fd, stach);
-	if (!stach)
-		return (NULL);
 	while(stach[i] && stach[i] != '\n')
 		i++;
 	while(stach[j])
 		j++;
 	if (j != 0)
 	{
-		lign = ft_substr(stach, 0, i + 1);
-		temp = ft_substr(stach, i + 1, j);
+		*line = ft_substr(stach, 0, i + 1);
+		*temp = ft_substr(stach, i + 1, j);
 	}
+}
+char *get_next_line(int fd)
+{
+	char		*line;
+	char		*temp;
+	static char *stach;
+
+	line = NULL;
+	temp = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	stach = fill_lines(fd, stach);
+	if (!stach)
+		return (NULL);
+	ft_separate_lines(stach, &line, &temp);
 	free(stach);
 	stach = temp;
-	return(lign);
+	return(line);
 }
 
-int    main(void)
-{
-    int        fd;
-    char    *ligne;
-
-    ligne = NULL;
-    fd = open("txt.txt", O_RDONLY);
-    while ((ligne = get_next_line(fd)) != NULL)
-    {
-        printf("%s", ligne);
-        free(ligne);
-    }
-    close(fd);
-}
