@@ -6,14 +6,13 @@
 /*   By: tmaissne <tmaissne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/18 14:42:49 by tmaissne          #+#    #+#             */
-/*   Updated: 2026/11/19 15:23:02 by tmaissne         ###   ########.fr       */
+/*   Updated: 2026/11/19 15:53:55 by tmaissne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-static char *ft_read(int fd, char *stach, ssize_t size)
+static char	*ft_read(int fd, char *stach, ssize_t size)
 {
 	char	*tmp;
 	char	*str;
@@ -34,8 +33,9 @@ static char *ft_read(int fd, char *stach, ssize_t size)
 		stach = tmp;
 	}
 	free(str);
-	return(stach);
+	return (stach);
 }
+
 static char	*fill_lines(int fd, char *stach)
 {
 	ssize_t	size;
@@ -47,7 +47,7 @@ static char	*fill_lines(int fd, char *stach)
 		stach[0] = '\0';
 	}
 	stach = ft_read(fd, stach, size);
-	return(stach);
+	return (stach);
 }
 
 void	ft_separate_lines(char *stach, char **line, char **temp)
@@ -57,9 +57,9 @@ void	ft_separate_lines(char *stach, char **line, char **temp)
 
 	i = 0;
 	j = 0;
-	while(stach[i] && stach[i] != '\n')
+	while (stach[i] && stach[i] != '\n')
 		i++;
-	while(stach[j])
+	while (stach[j])
 		j++;
 	if (j != 0)
 	{
@@ -67,11 +67,12 @@ void	ft_separate_lines(char *stach, char **line, char **temp)
 		*temp = ft_substr(stach, i + 1, j);
 	}
 }
-char *get_next_line(int fd)
+
+char	*get_next_line(int fd)
 {
 	char		*line;
 	char		*temp;
-	static char *stach;
+	static char	*stach;
 
 	line = NULL;
 	temp = NULL;
@@ -83,6 +84,5 @@ char *get_next_line(int fd)
 	ft_separate_lines(stach, &line, &temp);
 	free(stach);
 	stach = temp;
-	return(line);
+	return (line);
 }
-

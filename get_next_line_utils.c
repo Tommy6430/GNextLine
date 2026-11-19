@@ -6,7 +6,7 @@
 /*   By: tmaissne <tmaissne@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 15:48:11 by tmaissne          #+#    #+#             */
-/*   Updated: 2026/11/18 17:23:09 by tmaissne         ###   ########.fr       */
+/*   Updated: 2026/11/19 15:56:08 by tmaissne         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+
 int	ft_strlen(char *str)
 {
 	int	i;
@@ -50,7 +51,7 @@ int	ft_strlen(char *str)
 	i = 0;
 	if (!str)
 		return (0);
-	while(str[i])
+	while (str[i])
 		i++;
 	return (i);
 }
@@ -80,6 +81,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	str[i] = '\0';
 	return (str);
 }
+
 int	ft_strchr(char *s, int c)
 {
 	int		i;
